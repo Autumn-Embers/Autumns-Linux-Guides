@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" href="pagestyle.css">
+<title>Autumns Arch Linux Guide</title>
+<link rel="icon" type="image/x-icon" href="drawing.svg">
+</head>
+<body>
+<table>
+<tr>
+<td><h1 ID="TOP"><i>How To Install Arch Linux</i></h1></td>
+</tr>
+<tr>
+<td><h2><strong><u>PREPERATION</u></strong></h2><p><br>First, you will need to download <q>Ventoy</q> on your system.<br><br>I will list instructions on getting ventoy running on each os.<br><br>On Windows, click <i><a href="https://www.ventoy.net/en/download.html" target="_blank">here</a></i> to go to the ventoy download page, Then download the windows version of ventoy, Then extract the file, Then run ventoy.<br><br>On Pacman/Arch based systems, open terminal and type <i>sudo pacman -S paru</i> if you don't already have paru, Then type <i>sudo paru -S ventoy</i>, Then run ventoy.<br><br>On Red Hat/Fedora systems, open terminal and type <i>sudo dnf copr enable karlisk/ventoy</i> Then type <i>sudo dnf install ventoy</i>, Then run ventoy.<br><br>On Nixos, (Note this will only work if you allowed unfree software when you installed Nixos), open terminal and type <i>nix-shell -p ventoy-full</i> Then type <i>sudo ventoy-web</i> Then it will give you a link, copy the link, then open your browser and paste it into the search bar, Then it will be running ventoy in your browser.<br><br>On Ubuntu based systems, click <i><a href="https://sourceforge.net/projects/ventoy/files/v1.1.17/" target="_blank">here</a></i> to go to the sourceforge ventoy download page, then download the linux.tar.gz file then in terminal type <i>cd Downloads</i> Then type <i>tar -xzvf ventoy-(version number here)-linux.tar.gz</i> must match the version you downloaded for example ventoy-1.1.17-linux.tar.gz Then type <i>cd ventoy-(version number)</i> Then type <i>ls</i> Then type <i>sudo ./VentoyWeb.sh</i> Then copy the it will give you a link to copy, after copying the link open your browser and paste it into the search bar, Then you will have ventoy running in the browser.<br><br>Next, install ventoy to an empty usb drive, by opening ventoy, selecting which usb drive you want to use, and then clicking install.<br><br>Once thats done, install an Arch linux iso, you can click <i><a href="https://archlinux.org/download/" target="_blank">here</a></i> to go to the Arch linux downloads page, Then scroll down to where it says Worldwide on the site, Then click on one of the options listed under Worldwide, Then after it takes you to the list of files click the file that says <i>archlinux-x86_64.iso</i> to download the Arch linux iso file.<br><br>Now put the Arch linux iso file you just downloaded onto the ventoy usb drive.<br><br>Lastly, if you are ready to install Arch linux, restart your pc and enter the boot options with the button instructed to be pressed on the bios startup screen common ones are <em>F2, F12, and DELETE.</em><br>This is my startup screen for example, so i would hit <i>F12</i> for boot options.<br><img src="20260816_203514.jpg" alt="Img not found" width="250" height="150"><br><br>Then, select the <em>VENTOY PARTITION 2</em> in the boot options.<br>Here is mine as an example, yours will be the name of the usb drive you installed ventoy on and partition 2.<br><img src="20260816_203438.jpg" alt="Img not found" width="250" height="150"><br><br>Then, select the Arch linux iso on the ventoy boot loader screen.<br>This is what that should look like.<br><img src="20260816_203.jpg" alt="Img not found" width="250" height="150"><br>Once you open the Arch linux iso and you're on the bootloader menu, select Arch Linux install medium (x86-64, BIOS), and that will boot you into the installer, which will look like terminal, and with that done, we move on to.</p>
+</td>
+</tr>
+<tr>
+<td><h2><strong><u>INSTALLATION</u></strong></h2><p><br>Now first off i will mark all command clearly with two dashes on the start and end of a command and a hash at the start of a command, heres an example <i>--#sudo pacman -Syu--</i><br><br>Now with that out of the way the first thing you will want to do is set your keyboard layout, so first type <i>--#localectl list-keymaps--</i> Then use the arrow keys to scroll down and locate the keyboard layout you want to use, after you locate it press <i>ctrl+c</i> to exit, then set your keyboard layout with <i>--#loadkeys us--</i> (or whichever option you chose) and that will set your keyboard layout.<br><br>Now you can set the font to be very readable with <i>--#setfont ter-132b--</i><br><br>Next you'll want to verify the boot mode with <i>--#cat /sys/firmware/efi/fw_platform_size--</i> if the command returns <q>64</q> then you're booted in UEFI mode with a 64 bit UEFI, if it returns <q>32</q> then same thing but it's a 32 bit UEFI which may limit the bootloader choice to those that support mixed mode booting, if it returns <q>No such file or directory</q> then you're in BIOS or CSM mode, just remember which mode you're in for later.<br><br>Now type <i>--#ip link--</i> to connect to the internet, if you're on ethernet thats it (I highly recommend just using ethernet), but for wifi you need to also use another command and do some more stuff after that, i recommend just following this guide <i><a href="https://wiki.archlinux.org/title/Iwd#iwctl" target="_blank">here</a></i> for setting up wifi, you may also need to configure the DHCP dynamic IP address and DNS server assignment, if your wifi connection isn't WLAN or WWAN, if you need to assign the ip address follow this guide <i><a href="https://wiki.archlinux.org/title/Network_configuration#Static_IP_address" target="_blank">here</a></i> for that.<br><br>Now test your connection with <i>--#ping 1.1.1.1--</i> and if it works, once it's done 4 or more pings press <i>ctrl+c</i> to stop the pinging.<br><br>Now use <i>--#timedatectl--</i> to update the system clock.<br><br>Ok now it's time to find, format and partition the disk, first type <i>--#fdisk -l--</i> to list your drives, results ending in rom, loop or airootfs may be ignored. mmcblk* devices ending in rpmb, boot0 and boot1 can be ignored.<br><br>Now once you have located the drive you want to use you'll need to format it, i will use /dev/sda as the example, but yours might be different and if it is, replace /dev/sda with your drives name, now type <i>--#fdisk /dev/sda--</i> <br>Then type <i>--#n--</i> <br>Then just hit <i>enter</i> for the default (primary partition)<br>And then hit <i>enter</i> again for default (partition 1).<br>Now for the sectors, you will want to make this partition 1Gb, to do that hit <i>enter</i> once to set the default first number (2048)<br>Then <i>--#2097024--</i> to size it as 1Gb<br>Then type <i>--#a--</i> to make it have the bootable flag.<br><br>Now to make the second partition, type <i>--#n--</i><br>Then just hit <i>enter</i> for each default it will be (primary) (partition 2) (2048) (the rest of the size on the disk)<br>Then after that type <i>--#w--</i> to write that to the disk.<br><br>Now you should have two formatted but unpartitioned disk sections, mine are /dev/sda1 and /dev/sda2 so yours should be your disks name then 1 and 2<br><br>Now it's time to make the partitions, for the first partition, the boot partition, type <i>--#mkfs.fat -F32 /dev/sda1--</i> to make the boot partition.<br><br>Then <i>--#mkfs.ext4 /dev/sda2--</i> to make the second partition, the root partition.<br><br>Now mount the drive and make the directory by typing <i>--#mount --mkdir /dev/sda2 /mnt--</i><br><br>Then <i>--#mount --mkdir /dev/sda1 /mnt/boot--</i><br><br>Now that you've made the directories, it's time to install the essentials.<br>To install the essentials for the os, type <i>--#pacstrap -K /mnt base linux linux-firmware networkmanager--</i><br><br>Now type <i>--#arch-chroot -S /mnt--</i> to get into the new install so you can configure some things.<br><br>Then type <i>--#locale-gen--</i> to generate the locales for region and language specific formatting.<br><br>Then <i>--#ln -sf /usr/share/zoneinfo/Region/City /etc/localtime--</i> to set your time zone.<br><br>Then type <i>--#hwclock --systohc--</i> to generate a file for time configuration.<br><br>Then <i>--#echo "LANG=en_AU.UTF-8" > /etc/locale.conf--</i> to set the language (swap en_AU for your language.)<br><br>Then <i>--#passwd--</i> and create your root password then confirm it.<br>(do not forget this.)<br>Then create a hostname with <i>--#echo "myhostname" > /etc/hostname--</i><br><br>Now you have to install grub and install it to the drive.<br><br>So type <i>--#pacman -S sudo grub os-prober--</i> to download grub.<br><br>Now if your on a UEFI system, type <i>--#grub-install --target=x86_64-efi --efi-directory=/dev/sda --bootloader-id=GRUB--</i><br>Or if you're on a BIOS system, type <i>--#grub-install --target=i386-pc /dev/sda--</i><br>Then type <i>--#grub-mkconfig -o /boot/grub/grub.cfg--</i><br><br>Then you will need to make a user with <i>--#useradd -m -G audio,video,input,wheel,sys,log,rfkill,lp,adm -s /bin/bash yourusername--</i><br><br>Then set the password for the user you just made with <i>--#passwd yourusername--</i><br>(Do not forget this.)<br><br>Finally press <i>ctrl+d</i> then type reboot.<br><br>If it pulls up the installers bootloader again just press the boot existing os option.</p></td>
+</tr>
+<tr>
+<td><h2><strong><u>SETUP</u></strong></h2><p><br>So now you boot into Arch linux, you will get a login prompt, you will want to sign in as root first to setup some stuff first, type in root as the username, then the root password you made.<br><br>So first off, you need to setup your internet, type <i>--#systemctl eneable NetworkManager.service--</i> then <i>--#systemctl start NetworkManager.service--</i><br><br>Then type <i>--#pacman -S reflector nano xorg-server xorg-xinit-- to download package reflectors, and nano, a useful editor tool, also xorg which is an important tool for GUI's (Graphical User Interfaces) in linux.</i><br><br>Then do a system-wide update with <i>--#pacman -Syu--</i><hr><br>Now you will want to install a desktop environment, and a login manager.<br>
+Below i will leave 6 buttons you can press to display each desktop environment.<br>
+<br>
+<button style="color:#72FF13; background-color:#bf00ff; padding: 6px 6px; text-align:center; display:inline-block; border-radius:12px; outline-style:ridge; outline-width:1px; outline-color:#b2b2b2;" onclick="document.getElementById('MyImage').src='Screenshot 2026-09-18 014653.png'">KDE Plasma</button>
+<button style="color:#72FF13; background-color:#bf00ff; padding: 6px 6px; text-align:center; display:inline-block; border-radius:12px; outline-style:ridge; outline-width:1px; outline-color:#b2b2b2;" onclick="document.getElementById('MyImage').src='Screenshot 2026-09-18 014109.png'">Gnome</button>
+<button style="color:#72FF13; background-color:#bf00ff; padding: 6px 6px; text-align:center; display:inline-block; border-radius:12px; outline-style:ridge; outline-width:1px; outline-color:#b2b2b2;" onclick="document.getElementById('MyImage').src='Screenshot 2026-09-18 013904.png'">Cinnamon</button>
+<button style="color:#72FF13; background-color:#bf00ff; padding: 6px 6px; text-align:center; display:inline-block; border-radius:12px; outline-style:ridge; outline-width:1px; outline-color:#b2b2b2;" onclick="document.getElementById('MyImage').src='Screenshot 2026-09-18 014455.png'">XFCE</button>
+<button style="color:#72FF13; background-color:#bf00ff; padding: 6px 6px; text-align:center; display:inline-block; border-radius:12px; outline-style:ridge; outline-width:1px; outline-color:#b2b2b2;" onclick="document.getElementById('MyImage').src='Screenshot 2026-09-18 013650.png'">Cosmic</button>
+<button style="color:#72FF13; background-color:#bf00ff; padding: 6px 6px; text-align:center; display:inline-block; border-radius:12px; outline-style:ridge; outline-width:1px; outline-color:#b2b2b2;" onclick="document.getElementById('MyImage').src='Screenshot 2026-09-18 014247.png'">MATE</button>
+<br><br>
+<img id="MyImage" src="display-text.svg" style="width:500px; height:300px;">
+<br>
+Below there will be 4 buttons you can press to see what the different login managers look like.<br>
+<br>
+<button style="color:#72FF13; background-color:#bf00ff; padding: 6px 6px; text-align:center; display:inline-block; border-radius:12px; outline-style:ridge; outline-width:1px; outline-color:#b2b2b2;" onclick="document.getElementById('myImage').src='Screenshot 2026-09-18 023442.png'">Plasma Login Manager</button>
+<button style="color:#72FF13; background-color:#bf00ff; padding: 6px 6px; text-align:center; display:inline-block; border-radius:12px; outline-style:ridge; outline-width:1px; outline-color:#b2b2b2;" onclick="document.getElementById('myImage').src='Screenshot 2026-09-18 024410.png'">SDDM</button>
+<button style="color:#72FF13; background-color:#bf00ff; padding: 6px 6px; text-align:center; display:inline-block; border-radius:12px; outline-style:ridge; outline-width:1px; outline-color:#b2b2b2;" onclick="document.getElementById('myImage').src='Screenshot 2026-09-18 024231.png'">GDM</button>
+<button style="color:#72FF13; background-color:#bf00ff; padding: 6px 6px; text-align:center; display:inline-block; border-radius:12px; outline-style:ridge; outline-width:1px; outline-color:#b2b2b2;" onclick="document.getElementById('myImage').src='Screenshot 2026-09-18 013452.png'">Cosmic Greeter</button>
+<br><br>
+<img id="myImage" src="display-text2.svg" style="width:500px; height:300px;"><br><br>
+<hr>
+<br>To install a dektop environment and a login manager, you will need to do --#sudo pacman -S desktop-environment-package-name login-manager-package-name-- and then enable the login manager GUI on startup.<br>
+<br>Below i will list the desktop environment packages, login manager packages, and the command to enable each login manager GUI.<br>
+<br>Dektop environment packages.<br>
+<div style="display:inline-block;">
+<ul>
+<li>KDE Plasma packages.<br>plasma-meta kde-applications-meta</li><br>
+<li>Gnome packages.<br>gnome gnome-extra</li><br>
+<li>Cinnamon packages.<br>cinnamon gnome-terminal</li><br>
+<li>XFCE packages.<br>xfce4 xfce4-goodies</li><br>
+<li>Cosmic packages.<br>cosmic</li><br>
+<li>MATE packages.<br>mate</li><br>
+</ul>
+</div>
+<br>
+<br>Login manager packages.<br>
+<div style="display:inline-block;">
+<ul>
+<li>Plasma login manager.<br>plasma-login-manager</li><br>
+<li>SDDM.<br>sddm</li><br>
+<li>GDM.<br>gdm</li><br>
+<li>Cosmic greeter.<br>cosmic-greeter</li><br>
+</ul>
+</div>
+<br>
+<br>Enabling the login manager GUI.<br>
+<div style="display:inline-block;">
+<ul>
+<li>For Plasma login manager, type in terminal.<br>--#systemctl enable plasmalogin--</li><br>
+<li>For SDDM, type in terminal.<br>--#systemctl enable sddm--</li><br>
+<li>For GDM, type in terminal.<br>--#systemctl enable gdm--</li><br>
+<li>For Cosmic greeter, type in terminal.<br>--#systemctl enable cosmic-greeter--</li><br>
+</ul>
+</div>
+<br>
+Then you just have to restart your system by typing in --#reboot--<br>
+<hr>
+<br>After you start up your os, go to terminal/konsole and type <i>--#su root--</i>, and type in the root password you made in the installer to swap to root user.<br>Now as root user type <i>--#sudo EDITOR=/usr/bin/nano visudo--</i> now use the arrow keys to navigate to where it says, "##uncomment to allow members of group wheel to execute any command"<br>"# %wheel ALL=ALL(ALL:ALL) ALL" remove the hash from this line so it's just %wheel ALL=ALL(ALL:ALL) ALL<br>Then press <i>ctrl+x</i> then press <i>y</i> then hit enter.<br><br>Now you can go to terminal and type <i>--#su yourusername--</i> to swap back to your user, and now you should be able to run commands as root, like <i>--#sudo pacman -Syu--</i> the system-wide update command.<br><br>Now you can configure your settings, go to your panel/taskbar and lookup system settings, then you can configure any other stuff you need to like keyboard layout (again or fix it), themes, wallpaper, display settings, general stuff like that.<br><br>
+You can also check out my Linux setup guide with the button at the bottom of the page for some more detailed setup stuff.<hr>
+<h2><b><i><u>AND DONE</u></i></b><br></h2><p>And thats pretty much it.<br>Congratulations you've managed to install Arch linux.</p>
+</td>
+</tr>
+<tr>
+<td><p style="color:#080808; font-size:50px; font-family:Courier New; text-align:center;"><B><span style=color:#006B3C;>=)</span><u><span style=color:#e30022;>ENJOY</span> <span style=color:#ed872d;>USING</span>
+<span style=color:#fff600;>LINUX</span><span style=color:#0A1195;>!</span></u></b></p>
+<div style="text-align:center; color:red;"><img src="75902-tux-kernel-racer-penguins-linux-penguin-2582356000.png" alt="big-linux-penguin.png not found =(" width="200" height="250"/></div>
+<nav>
+<a href="index2.html" class="button" style="border-radius:12px; outline-style:ridge; outline-width:3px; outline-color:#b2b2b2;"><i>Click here for my Linux installation guide</i></a>
+<br><br>
+<a href="index3.html" class="button" style="border-radius:12px; outline-style:ridge; outline-width:3px; outline-color:#b2b2b2;"><i>Click here for my Linux setup guide</i></a>
+<br><br>
+<a href="index.html" class="button" style="border-radius:12px; outline-style:ridge; outline-width:3px; outline-color:#b2b2b2;"><i>Click to go back to homepage</i></a>
+<br><hr>
+<i><a href="#TOP" class="button" style="border-radius:12px; outline-style:ridge; outline-width:3px; outline-color:#b2b2b2;">&uarr; Click here to go back to top &uarr;</a></i><br></nav>
+<br>
+<br><div><img src="neocities.png" alt="Site hosted by Neocities"></div><br>
+</td>
+</tr>
+</table>
+<!-- My third html page -->
+</body>
+</html>
