@@ -8,3 +8,5 @@ div {text-align:center;}
 img {color:red;}
 a {color:#72FF13;}
 nav {color:#72FF13; font-family:Courier New; text-align:center; border:5px #bf00ff; border-radius:12px; border-style:ridge; display:inline-block; padding:10px;}
+.hr1 {color:pink; padding:2px; border:ridge 0 #ffffff; border-radius:15px; background-image:url('rainbow.gif');}
+.hr2 {color:pink; padding:2px; border:ridge 0 #ffffff; border-radius:15px; background-image:url('rainbowflip.gif');}
